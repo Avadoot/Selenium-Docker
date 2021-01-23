@@ -54,6 +54,7 @@ pipeline{
                 withCredentials([usernameColonPassword(credentialsId: "dockerhub", passwordVariable: "pass", usernameVariable: "user")]) {
                 bat "docker login --username=${user} --password=${pass}"
                 bat "docker push avadooty/selenium-docker:latest"
+                }
             }
         }
     }
