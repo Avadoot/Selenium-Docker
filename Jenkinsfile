@@ -46,7 +46,7 @@ pipeline{
         }
         stage('Build Image'){
             steps{
-                bat "docker build -t='avadooty/selenium-docker' ."
+                bat "docker build -t=avadooty/selenium-docker ."
             }
         }
         stage('Push Image'){
