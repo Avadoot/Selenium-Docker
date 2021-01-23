@@ -1,3 +1,5 @@
+/* Pipeline syntax for linux*/
+/*
 pipeline {
     agent none
     stages {
@@ -15,7 +17,7 @@ pipeline {
         stage('Build Image') {
             steps {
                 script {
-                	app = docker.build("vinsdocker/selenium-docker")
+                	app = docker.build("avadooty/selenium-docker")
                 }
             }
         }
@@ -26,6 +28,33 @@ pipeline {
 			        	app.push("${BUILD_NUMBER}")
 			            app.push("latest")
 			        }
+                }
+            }
+        }
+    }
+}*/
+
+/* Pipeline syntax for windows and mac*/
+
+pipeline{
+    agent any
+    stages{
+        stage('Build Jar'){
+            steps{
+               bat "mvn clean package -DskipTests"
+            }
+        }
+        stage('Build Image'){
+            steps{
+                bat "docker build -t='avadooty/selenium-docker' ."
+            }
+        }
+        stage('Push Image'){
+            steps{
+                withCredentials([usernamePassword(credentialsID: 'dockerhub', passwordVariable: 'pass', usernameVariable:'user')])
+
+                bat "docker login --username=${user} --password=${pass}"
+                bat "docker push avadooty/selenium-docker:latest"
                 }
             }
         }
